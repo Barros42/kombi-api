@@ -8,7 +8,8 @@ import IGpsDataRepository from 'src/common/interfaces/gps.data.repository.interf
 
 @Injectable()
 export default class SaveCurrentGpsDataUseCase
-  implements IUseCase<SaveCurrentGpsDataUseCaseInput, SaveCurrentGpsDataUseCaseOutput> {
+  implements
+  IUseCase<SaveCurrentGpsDataUseCaseInput, SaveCurrentGpsDataUseCaseOutput> {
   private readonly logger = new Logger(SaveCurrentGpsDataUseCase.name);
 
   constructor(
@@ -20,7 +21,28 @@ export default class SaveCurrentGpsDataUseCase
     input: SaveCurrentGpsDataUseCaseInput,
   ): Promise<SaveCurrentGpsDataUseCaseOutput> {
     this.logger.log(`Starting use case with input: ${JSON.stringify(input)}`);
-    await this.gpsDataRepository.createEntity(input)
-    return Promise.resolve(new SaveCurrentGpsDataUseCaseOutput({ status: 'OK', timestamp: new Date() }));
+
+    const existingData = await this.gpsDataRepository.findOne({
+      where: { deviceId: input.deviceId },
+    });
+
+    if (!existingData) {
+      this.logger.log('No existing GPS data found, creating new entry.');
+      await this.gpsDataRepository.createEntity(input);
+      return new SaveCurrentGpsDataUseCaseOutput({
+        status: 'OK',
+        timestamp: new Date(),
+      });
+    }
+
+    await this.gpsDataRepository.updateEntity(existingData.id, input);
+    this.logger.log(
+      'GPS data updated successfully for deviceId: ' + input.deviceId,
+    );
+    return new SaveCurrentGpsDataUseCaseOutput({
+      status: 'OK',
+      timestamp: new Date(),
+    });
+
   }
 }
