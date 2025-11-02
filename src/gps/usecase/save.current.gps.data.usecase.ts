@@ -9,13 +9,14 @@ import IGpsDataRepository from 'src/common/interfaces/gps.data.repository.interf
 @Injectable()
 export default class SaveCurrentGpsDataUseCase
   implements
-  IUseCase<SaveCurrentGpsDataUseCaseInput, SaveCurrentGpsDataUseCaseOutput> {
+    IUseCase<SaveCurrentGpsDataUseCaseInput, SaveCurrentGpsDataUseCaseOutput>
+{
   private readonly logger = new Logger(SaveCurrentGpsDataUseCase.name);
 
   constructor(
     @Inject(GpsDataRepositoryToken)
     private readonly gpsDataRepository: IGpsDataRepository,
-  ) { }
+  ) {}
 
   async run(
     input: SaveCurrentGpsDataUseCaseInput,
@@ -43,6 +44,5 @@ export default class SaveCurrentGpsDataUseCase
       status: 'OK',
       timestamp: new Date(),
     });
-
   }
 }

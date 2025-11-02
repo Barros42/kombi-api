@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import {
+  GetCurrentGpsDataUseCaseToken,
   GpsDataRepositoryToken,
   SaveCurrentGpsDataUseCaseToken,
 } from './gps.token';
@@ -7,6 +8,7 @@ import { HttpModule } from '@nestjs/axios';
 import SaveCurrentGpsDataUseCase from './usecase/save.current.gps.data.usecase';
 import GpsController from './external/controller/gps.controller';
 import { GpsDataRepository } from 'src/common/external/repositories/gps.repository';
+import GetCurrentGpsDataUseCase from './usecase/get.current.gps.data.usecase';
 
 @Module({
   imports: [HttpModule],
@@ -15,6 +17,10 @@ import { GpsDataRepository } from 'src/common/external/repositories/gps.reposito
     {
       provide: SaveCurrentGpsDataUseCaseToken,
       useClass: SaveCurrentGpsDataUseCase,
+    },
+    {
+      provide: GetCurrentGpsDataUseCaseToken,
+      useClass: GetCurrentGpsDataUseCase,
     },
     {
       provide: GpsDataRepositoryToken,
