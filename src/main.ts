@@ -7,7 +7,12 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.enableCors();
+  app.enableCors({
+    origin: '*', // ou uma lista de domínios específicos
+    methods: '*', // permite todos os métodos (GET, POST, etc)
+    allowedHeaders: '*', // permite todos os headers
+    exposedHeaders: '*', // (opcional) expõe todos os headers da resposta
+  });
   const config = new DocumentBuilder()
     .setTitle('Kombi API')
     .setDescription('API da Kombi')
