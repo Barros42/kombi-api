@@ -1,3 +1,4 @@
+import * as os from 'os';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -14,6 +15,29 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
-  await app.listen(process.env.PORT ?? 3000);
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+
+
+  const networkInterfaces = os.networkInterfaces();
+  const addresses: string[] = [];
+
+  for (const iface of Object.values(networkInterfaces)) {
+    if (iface) {
+      for (const config of iface) {
+        if (config.family === 'IPv4' && !config.internal) {
+          addresses.push(config.address);
+        }
+      }
+    }
+  }
+
+  console.log(`\n🚐 Kombi API is running!`);
+
+  addresses.forEach((ip) => {
+    console.log(`👉 Accessible on: http://${ip}:${port}`);
+  });
+
+  console.log(`👉 Local access: http://localhost:${port}\n`);
 }
 bootstrap();
