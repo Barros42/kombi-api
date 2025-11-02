@@ -1,21 +1,17 @@
 module.exports = {
   apps: [
     {
-      name: "kombios-gps-sync",
-      script: "./kombios-gps-sync-service.py",
-      watch: false,
+      name: "kombi-api",         // Nome da aplicação no PM2
+      script: "dist/main.js",    // Caminho para o arquivo compilado do NestJS
+      instances: 1,              // Número de instâncias (1 = single thread, "max" = todos os núcleos)
+      exec_mode: "fork",         // Modo fork (simples) ao invés de cluster
+      watch: false,              // Desative watch em produção
       env: {
         NODE_ENV: "development",
       },
       env_production: {
         NODE_ENV: "production",
       },
-      autorestart: true,
-      max_restarts: 10,
-      restart_delay: 5000, // Delay para evitar loop de restart muito rápido
-      error_file: "/var/log/kombios/gps-sync-error.log",
-      out_file: "/var/log/kombios/gps-sync-out.log",
-      time: true, // Adiciona timestamps aos logs
     },
   ],
 };
