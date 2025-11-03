@@ -54,7 +54,7 @@ export default class GpsController {
 
   @Get('last-position')
   async getLastPosition(
-    @Headers('Kombi-Id') deviceId: string, // exemplo pegando header específico
+    @Headers('Kombi-Id') deviceId: string,
   ): Promise<GetCurrentGpsDataUseCaseOutput> {
     try {
 
