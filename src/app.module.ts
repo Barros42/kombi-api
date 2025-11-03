@@ -3,13 +3,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { getTypeOrmConfig } from './ormconfig';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+
 import { ScheduleModule } from '@nestjs/schedule';
 import { GpsModule } from './gps/gps.module';
+import { NetworkModule } from './network/network.module';
 
 @Module({
   imports: [
+    NetworkModule,
+    GpsModule,
     ConfigModule.forRoot({ isGlobal: true }),
     ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
@@ -17,6 +19,8 @@ import { GpsModule } from './gps/gps.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => getTypeOrmConfig(config),
     }),
+    NetworkModule,
   ],
+  controllers: [],
 })
 export class AppModule {}
