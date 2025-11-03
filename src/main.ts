@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { raw, json, urlencoded } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +14,19 @@ async function bootstrap() {
     allowedHeaders: '*', // permite todos os headers
     exposedHeaders: '*', // (opcional) expõe todos os headers da resposta
   });
+
+  // Permite receber dados binários compactados
+  app.use(
+    raw({
+      type: 'application/x-msgpack+gzip',
+      limit: '1mb',
+    }),
+  );
+
+  // Ainda permite JSON normal
+  app.use(json({ limit: '1mb' }));
+  app.use(urlencoded({ extended: true }));
+
   const config = new DocumentBuilder()
     .setTitle('Kombi API')
     .setDescription('API da Kombi')

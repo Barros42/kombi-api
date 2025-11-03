@@ -24,4 +24,8 @@ export class NetworkDataInput {
 
   @IsInt()
   wifiSignalStrength: number;
+
+  constructor(obj: Partial<NetworkDataInput>) {
+    Object.assign(this, obj);
+  }
 }
