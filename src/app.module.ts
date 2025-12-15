@@ -7,6 +7,7 @@ import { getTypeOrmConfig } from './ormconfig';
 import { ScheduleModule } from '@nestjs/schedule';
 import { GpsModule } from './gps/gps.module';
 import { NetworkModule } from './network/network.module';
+import { TelemetryModule } from './telemetry/telemetry.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { NetworkModule } from './network/network.module';
       useFactory: (config: ConfigService) => getTypeOrmConfig(config),
     }),
     NetworkModule,
+    TelemetryModule,
   ],
   controllers: [],
 })

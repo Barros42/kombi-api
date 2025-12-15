@@ -11,7 +11,10 @@ import {
 import IUseCase from 'src/interface/usecases/IUseCase';
 import SaveCurrentNetworkDataUseCaseInput from './usecases/dto/input/save.current.network.data.usecase.input';
 import SaveCurrentNetworkDataUseCaseOutput from './usecases/dto/output/save.current.network.data.usecase.output';
-import { GetCurrentNetworkDataUseCaseToken, SaveCurrentNetworkDataUseCaseToken } from './network.tokens';
+import {
+  GetCurrentNetworkDataUseCaseToken,
+  SaveCurrentNetworkDataUseCaseToken,
+} from './network.tokens';
 import { NetworkDataInput } from './dto/network.data.input';
 import GetCurrentNetworkDataUseCaseOutput from 'src/gps/usecase/dto/output/get.current.network.data.output';
 import GetCurrentNetworkDataUseCaseInput from 'src/gps/usecase/dto/input/get.current.network.data.input';
@@ -31,7 +34,7 @@ export default class NetworkController {
       GetCurrentNetworkDataUseCaseInput,
       GetCurrentNetworkDataUseCaseOutput
     >,
-  ) { }
+  ) {}
 
   @Post()
   async saveLastData(
@@ -57,7 +60,6 @@ export default class NetworkController {
     @Headers('Kombi-Id') deviceId: string,
   ): Promise<GetCurrentNetworkDataUseCaseOutput> {
     try {
-
       if (!deviceId) {
         throw new BadRequestException('Kombi-Id header is required');
       }
